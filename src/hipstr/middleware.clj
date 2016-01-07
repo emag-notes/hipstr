@@ -6,13 +6,19 @@
             [prone.middleware :refer [wrap-exceptions]]
             [noir-exception.core :refer [wrap-internal-error]]))
 
+(defn go-bowling? [handler]
+  (fn [request]
+    (let [request (assoc request :go-bowling? "YES! NOW!")]
+      (handler request))))
+
 (defn log-request [handler]
   (fn [req]
     (timbre/debug req)
     (handler req)))
 
 (def development-middleware
-  [wrap-error-page
+  [go-bowling?
+   wrap-error-page
    wrap-exceptions])
 
 (def production-middleware
