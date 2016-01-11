@@ -10,9 +10,8 @@ You will need [Leiningen][1] 2.0 or above installed.
 
 Luminus template version: 1.16.7
 
-``` clj
-$ cat ~/.lein/profiles.clj
-{:user {:plugins [[luminus/lein-template "1.16.7"]]}}
+``` sh
+$ lein new luminus myapp --template-version 1.16.7
 ```
 
 ## Running
