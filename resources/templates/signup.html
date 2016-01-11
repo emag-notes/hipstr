@@ -3,18 +3,36 @@
 <h1>Sign Up <span class="small">Nobody will ever know.</span></h1>
 <div class="row">
   <div class="col-md-6">
-    <form role="form">
+    <form role="form" method="post">
       <div class="form-group">
         <label for="username">Username</label>
-        <input id="username" type="input" class="form-control" name="username" placeholder="AtticusButch"/>
+        <ul class="errors">
+          {% for e in errors.username %}
+          <li>{{e}}</li>
+          {% endfor %}
+        </ul>
+        <input id="username" type="input" class="form-control"
+               name="username" placeholder="AtticusButch" value="{{usernmae}}"/>
       </div>
       <div class="form-group">
         <label for="email">Email address</label>
-        <input id="email" type="email" class="form-control" name="email" placeholder="so1999@hotmail.com"/>
+        <ul class="errors">
+          {% for e in errors.email %}
+          <li>{{e}}</li>
+          {% endfor %}
+        </ul>
+        <input id="email" type="email" class="form-control"
+               name="email" placeholder="so1999@hotmail.com" value="{{email}}"/>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input id="password" type="password" class="form-control" name="password" placeholder="security-through-obscurity"/>
+        <ul class="errors">
+          {% for e in errors.password %}
+          <li>{{e}}</li>
+          {% endfor %}
+        </ul>
+        <input id="password" type="password" class="form-control"
+               name="password" placeholder="security-through-obscurity" value="{{password}}"/>
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
