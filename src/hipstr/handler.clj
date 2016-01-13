@@ -13,11 +13,30 @@
             [taoensso.timbre.appenders.rolling :as rolling]
             [selmer.parser :as parser]
             [environ.core :refer [env]]
-            [cronj.core :as cronj]))
+            [cronj.core :as cronj]
+            [migratus.core :as migratus]))
+
+(def migratus-config
+  {:store :database
+   :migration-dir "migrations"
+   :migration-table-name "_migrations"
+   :db {:classname "org.postgresql.Driver"
+        :subprotocol "postgresql"
+        :subname "//localhost/postgres"
+        :user "hipstr"
+        :password "p455w0rd"}})
 
 (defroutes base-routes
   (route/resources "/")
   (route/not-found "Not Found"))
+
+(defn migrate-db []
+  (timbre/info "checking migrations")
+  (try
+    (migratus/migrate migratus-config)
+    (catch Exception e
+      (timbre/error "Failed to migrate" e)))
+  (timbre/info "finished migrations"))
 
 (defn init
   "init will be called once when
@@ -33,6 +52,7 @@
     [:shared-appender-config :rolling :path] "logs/hipstr.log")
 
   (if (env :dev) (parser/cache-off!))
+  (migrate-db)
   ;;start the expired session cleanup job
   (cronj/start! session-manager/cleanup-job)
   (timbre/info "\n-=[ hipstr started successfully"

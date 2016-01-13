@@ -3,6 +3,7 @@
             [hipstr.layout :as layout]
             [hipstr.util :as util]
             [hipstr.validators.user-validator :as v]
+            [hipstr.models.user-model :as u]
             [ring.util.response :as response]))
 
 (defn home-page []
@@ -24,7 +25,9 @@
 (defn signup-page-submit [user]
   (let [errors (v/validate-signup user)]
     (if (empty? errors)
-      (response/redirect "/signup-success")
+      (do
+        (u/add-user! user)
+        (response/redirect "/signup-success"))
       (layout/render "signup.html" (assoc user :errors errors)))))
 
 (defroutes home-routes
