@@ -1,0 +1,14 @@
+{% extends "templates/base.html" %}
+{% block content %}
+<h1>{{artist}}</h1>
+<ol class="discographies">
+  {% for d in discographies %}
+  <li>
+    <div class="discography">
+      <div class="album-name">{{d.album_name}}</div>
+      <div class="release-date">Released {{d.release_date}}</div>
+    </div>
+  </li>
+  {% endfor %}
+</ol>
+{% endblock %}
