@@ -1,6 +1,8 @@
 (ns hipstr.handler
   (:require [compojure.core :refer [defroutes]]
+            [hipstr.models.connection :refer [db-spec]]
             [hipstr.routes.home :refer [home-routes]]
+            [hipstr.routes.albums :refer [album-routes]]
             [hipstr.routes.test-routes :refer [test-routes]]
             [hipstr.middleware :refer [load-middleware]]
             [hipstr.session-manager :as session-manager]
@@ -20,11 +22,7 @@
   {:store :database
    :migration-dir "migrations"
    :migration-table-name "_migrations"
-   :db {:classname "org.postgresql.Driver"
-        :subprotocol "postgresql"
-        :subname "//localhost/postgres"
-        :user "hipstr"
-        :password "p455w0rd"}})
+   :db db-spec})
 
 (defroutes base-routes
   (route/resources "/")
@@ -80,7 +78,7 @@
 
 (def app (app-handler
            ;; add your application routes here
-           [home-routes test-routes base-routes]
+           [home-routes album-routes base-routes test-routes]
            ;; add custom middleware here
            :middleware (load-middleware)
            :ring-defaults (mk-defaults false)
