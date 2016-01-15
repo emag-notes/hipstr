@@ -21,4 +21,20 @@ FROM artists art
 WHERE
   art.name = :artist_name
 ORDER BY
-  alb.release_date DESC
+  alb.release_date DESC;
+
+-- name: insert-album<!
+-- Adds the album for the given artist to the database
+-- EXPECTS :artist_id, :album_name, and :release_date
+INSERT INTO albums (artist_id, name, release_date)
+VALUES (:artist_id, :album_name, date(:release_date));
+
+-- name: get-album-by-name
+-- Fetches the specific album from the database for a particular
+-- artist.
+-- Expects :artist_id and :album_name.
+SELECT *
+FROM albums
+WHERE
+  artist_id = :artist_id AND
+  name = :album_name;

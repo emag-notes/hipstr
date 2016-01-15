@@ -1,15 +1,24 @@
 {% extends "templates/base.html" %}
 {% block content %}
 <h1>Recently Added</h1>
-<ol class="albums">
-  {% for a in albums %}
-  <li>
-    <div class="artist">
-      <a href="/albums/{{a.artist}}">{{a.artist}}</a>
-      <div class="album-name">{{a.album_name}}</div>
-      <div class="release-date">{{a.release_date}}</div>
-    </div>
-  </li>
-  {% endfor %}
-</ol>
+<div class="row">
+  <div class="col-sm-6 col-md-4">
+    <ol class="albums">
+      {% for a in albums %}
+      <li>
+        <div class="artist">
+          <a href="/albums/{{a.artist}}">{{a.artist}}</a>
+          <div class="album-name">{{a.album_name}}</div>
+          <div class="release-date">{{a.release_date}}</div>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+  <div class="col-sm-6 col-md-4">
+    {% with form=form %}
+    {% include "templates/albums/add-album.html" %}
+    {% endwith %}
+  </div>
+</div>
 {% endblock %}
