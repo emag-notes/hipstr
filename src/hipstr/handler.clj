@@ -6,6 +6,7 @@
             [hipstr.routes.test-routes :refer [test-routes]]
             [hipstr.middleware :refer [load-middleware]]
             [hipstr.session-manager :as session-manager]
+            [hipstr.routes.access :as access]
             [noir.response :refer [redirect]]
             [noir.util.middleware :refer [app-handler]]
             [ring.middleware.defaults :refer [site-defaults]]
@@ -83,7 +84,7 @@
            :middleware (load-middleware)
            :ring-defaults (mk-defaults false)
            ;; add access rules here
-           :access-rules []
+           :access-rules access/rules
            ;; serialize/deserialize the following data formats
            ;; available formats:
            ;; :json :json-kw :yaml :yaml-kw :edn :yaml-in-html

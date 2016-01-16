@@ -3,6 +3,7 @@
             [hipstr.layout :as layout]
             [hipstr.util :as util]
             [hipstr.validators.user-validator :as v]
+            [hipstr.cookies :as cookies]
             [hipstr.models.user-model :as u]
             [ring.util.response :as response]))
 
@@ -30,9 +31,30 @@
         (response/redirect "/signup-success"))
       (layout/render "signup.html" (assoc user :errors errors)))))
 
+(defn login-page
+  "Renders the login form."
+  ([]
+   (layout/render "login.html" {:username (cookies/remember-me)}))
+  ([credentials]
+    (if (apply u/auth-user (map credentials [:username :password]))
+      (do (if (:remember-me credentials)
+            (cookies/remember-me (:username credentials))
+            (cookies/remember-me ""))
+          (response/redirect "/albums/recently-added"))
+      (layout/render "login.html" {:invalid-credentials? true}))))
+
+(defn logout
+  "Logs the user out of this session"
+  []
+  (u/invalidate-auth)
+  (response/redirect "/"))
+
 (defroutes home-routes
            (GET "/" [] (home-page))
            (GET "/about" request (about-page))
            (GET "/signup" [] (signup-page))
            (POST "/signup" [& form] (signup-page-submit form))
-           (GET "/signup-success" [] "Success!"))
+           (GET "/signup-success" [] "Success!")
+           (GET "/login" [] (login-page))
+           (POST "/login" [& login-form] (login-page login-form))
+           (ANY "/logout" [] (logout)))

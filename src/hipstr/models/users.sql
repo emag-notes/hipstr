@@ -9,4 +9,10 @@ VALUES (:username, :email, :password);
 -- Expects :username
 SELECT *
 FROM users
-WHERE username=:username
+WHERE username = :username
+
+-- name: get-user-by-username
+-- Fetches a user from the DB based on username.
+SELECT *
+FROM users
+WHERE username = :username
