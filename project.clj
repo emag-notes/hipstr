@@ -17,7 +17,8 @@
                  [postgresql/postgresql "9.3-1102.jdbc41"]
                  [migratus "0.7.0"]
                  [yesql "0.5.1"]
-                 [crypto-password "0.1.3"]]
+                 [crypto-password "0.1.3"]
+                 [korma "0.4.2"]]
 
   :repl-options {:init-ns hipstr.repl}
   :jvm-opts ["-server"]

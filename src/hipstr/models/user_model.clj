@@ -1,10 +1,22 @@
 (ns hipstr.models.user-model
-  (:require [yesql.core :refer [defqueries]]
-            [crypto.password.bcrypt :as password]
+  (:require [crypto.password.bcrypt :as password]
             [hipstr.models.connection :refer [db-spec]]
-            [noir.session :as session]))
+            [noir.session :as session])
+  (:use [korma.core]))
 
-(defqueries "hipstr/models/users.sql" {:connection db-spec})
+(defentity users
+           (pk :user_id))
+
+(defn get-user-by-username
+  "Fetches a user from the DB based on username."
+  [username]
+  (select users (where username)))
+
+(defn insert-user<!
+  "Inserts a new user into the Users table. Expects :username, :email,
+   and :pasword"
+  [user]
+  (insert users (values user)))
 
 (defn add-user!
   "Saves a user to the database."
